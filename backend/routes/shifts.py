@@ -4,12 +4,17 @@ from extensions import db
 from models import Shift, User
 from utils import role_required, shift_conflict_exists
 from datetime import datetime
+from flask_cors import CORS
 
 bp = Blueprint("shifts", __name__, url_prefix="/api/shifts")
+# Apply CORS to this specific blueprint
+CORS(bp)
 
 @bp.route("/", methods=["GET"])
 def get_shifts():
-    verify_jwt_in_request()
+    # Skip JWT verification for OPTIONS preflight requests
+    if request.method != 'OPTIONS':
+        verify_jwt_in_request()
     claims = get_jwt()
     user_id = get_jwt_identity()
     if claims.get("role") == "manager":

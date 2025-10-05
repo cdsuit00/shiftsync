@@ -9,15 +9,17 @@ export default function TimeOffRequestForm() {
   const navigate = useNavigate();
 
   const submit = async (e) => {
-    e.preventDefault();
-    try {
-      await api.post("/api/timeoff/", { start_date: startDate, end_date: endDate, reason });
-      alert("Submitted");
-      navigate("/");
-    } catch (err) {
-      alert(err.response?.data?.msg || "Submission failed");
-    }
-  };
+  e.preventDefault();
+  try {
+    await api.post("/api/timeoff/", { start_date: startDate, end_date: endDate, reason });
+    alert("Submitted");
+    navigate("/");
+  } catch (err) {
+    // Log the detailed server response
+    console.error("Full error object:", err.response);
+    alert(err.response?.data?.msg || "Submission failed. Check console for details.");
+  }
+};
 
   return (
     <div className="form-card">

@@ -4,3 +4,5 @@ Flask-Migrate>=4.0
 Flask-JWT-Extended>=4.4
 python-dotenv>=0.21
 psycopg2-binary>=2.9
+bleach>=4.0  # For input sanitization
+bcrypt>=3.2  # For stronger password hashing

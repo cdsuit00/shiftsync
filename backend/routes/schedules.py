@@ -2,8 +2,10 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import verify_jwt_in_request
 from datetime import date, datetime, timedelta
 from models import Shift
+from flask_cors import CORS
 
 bp = Blueprint("schedules", __name__, url_prefix="/api/schedules")
+CORS(bp)
 
 @bp.route("/<string:week_start>", methods=["GET"])
 def week_schedule(week_start):

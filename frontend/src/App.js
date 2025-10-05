@@ -5,6 +5,7 @@ import SignupForm from "./components/SignupForm";
 import Dashboard from "./components/Dashboard";
 import ScheduleCalendar from "./components/ScheduleCalendar";
 import ShiftForm from "./components/ShiftForm";
+import ShiftList from "./components/ShiftList";
 import TimeOffRequestForm from "./components/TimeOffRequestForm";
 import TimeOffApprovalList from "./components/TimeOffApprovalList";
 import { AuthContext } from "./context/AuthContext";
@@ -66,6 +67,14 @@ export default function App() {
           element={
             <PrivateRoute roles={["manager"]}>
               <TimeOffApprovalList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shifts"
+          element={
+            <PrivateRoute roles={["manager"]}>
+              <ShiftList />
             </PrivateRoute>
           }
         />

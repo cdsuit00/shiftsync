@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, make_response
 from config import Config
 from extensions import db, migrate, jwt
 from routes.auth import bp as auth_bp
@@ -7,6 +7,7 @@ from routes.timeoff import bp as timeoff_bp
 from routes.users import bp as users_bp
 from routes.schedules import bp as schedules_bp
 from models import User, Shift, TimeOffRequest
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +18,15 @@ def create_app():
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+    # --- CORS Configuration ---
+    CORS(app, resources={
+    r"/api/*": {
+        "origins": "http://localhost:3000",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Explicitly include OPTIONS
+        "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
+
     # register blueprints
     app.register_blueprint(auth_bp)
     app.register_blueprint(shifts_bp)
@@ -24,6 +34,7 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(schedules_bp)
 
+    # Health check
     @app.route("/health")
     def health():
         return jsonify({"status": "ok"})
