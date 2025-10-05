@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import jsonify
+from flask import jsonify, request
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity, get_jwt
 from datetime import datetime, date, timedelta
 from models import Shift
@@ -9,10 +9,12 @@ def role_required(role_name):
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
-            verify_jwt_in_request()
-            claims = get_jwt()
-            if claims.get("role") != role_name:
-                return jsonify({"msg": "Forbidden - manager only"}), 403
+            # Skip JWT verification for OPTIONS requests
+            if request.method != 'OPTIONS':
+                verify_jwt_in_request()
+                claims = get_jwt()
+                if claims.get("role") != role_name:
+                    return jsonify({"msg": "Forbidden - manager only"}), 403
             return fn(*args, **kwargs)
         return wrapper
     return decorator

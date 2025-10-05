@@ -42,7 +42,7 @@ export default function TimeOffApprovalList() {
         <tbody>
           {requests.map((r) => (
             <tr key={r.id}>
-              <td>{r.user_id}</td>
+              <td>{r.user_name}</td>
               <td>{r.start_date}</td>
               <td>{r.end_date}</td>
               <td>{r.reason}</td>

@@ -2,8 +2,11 @@ from flask import Blueprint, jsonify
 from models import User
 from utils import role_required
 from flask_jwt_extended import verify_jwt_in_request
+from flask_cors import CORS
 
 bp = Blueprint("users", __name__, url_prefix="/api/users")
+CORS(bp)
+
 
 @bp.route("/", methods=["GET"])
 @role_required("manager")

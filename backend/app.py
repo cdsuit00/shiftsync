@@ -19,10 +19,13 @@ def create_app():
     jwt.init_app(app)
 
     # --- CORS Configuration ---
-    # Configure CORS for the React frontend, allowing credentials
-    CORS(app, 
-         origins=["http://localhost:3000"],  # Specify your frontend origin
-         supports_credentials=True)  # Important if using cookies/sessions
+    CORS(app, resources={
+    r"/api/*": {
+        "origins": "http://localhost:3000",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Explicitly include OPTIONS
+        "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
 
     # register blueprints
     app.register_blueprint(auth_bp)
